@@ -38,7 +38,7 @@ uptcex:
 	sed -i.bak 's/|version|/|tcex_version|/g' ./docs/tcex/tcex.rst && rm ./docs/tcex/tcex.rst.bak;
 
 	# stage all changes (including deletions)
-	git add -A;
+	git add .;
 
 	# commit
 	git commit -m "Auto-update TCEX docs: $(today)";
