@@ -43,6 +43,9 @@ uptcex:
 	# commit
 	git commit -m "Auto-update TCEX docs: $(today)";
 
+	# push
+	git push
+
 clean:
 	# This script is to be run in the top directory of the TC Documentation (available here: https://github.com/ThreatConnect-Inc/threatconnect-developer-docs)
 
