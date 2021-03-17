@@ -29,11 +29,7 @@ uptcex:
 	chmod 755 ./tcex/docs/src/01__cleanup.sh;
 	chmod 755 ./docs/00_build.sh
 	# install needed python libraries
-	pip install tcex sphinx>=3.5.2 sphinx_rtd_theme CommonMark reno pre-commit;
-	# needed for pre-commit to work correctly
-	pre-commit install
-	#copy pre-commit config for docs
-	cp ./tcex/.pre-commit-config.yaml ./tcex/docs/src;
+	pip install tcex sphinx>=3.5.2 sphinx_rtd_theme CommonMark reno
 	# change to the tcex/docs/src directory and run the build
 	cd ./tcex/docs/src/; ../../../docs/00_build.sh;
 	# change to the tcex/docs/src directory and perform a clean up
