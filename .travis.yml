@@ -1,3 +1,5 @@
 language: bash
 script:
   - make uptcex
+env:
+  - PYTHON_VERSION=3.6.8
