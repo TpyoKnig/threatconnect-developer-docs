@@ -27,7 +27,7 @@ uptcex:
 	# make shell scripts executeable
 	chmod 755 ./tcex/docs/src/*.sh;
 	# install needed python libraries
-	pip install tcex sphinx>=3.5.2 sphinx_rtd_theme CommonMark reno pre-commit;
+	pip3 install tcex sphinx>=3.5.2 sphinx_rtd_theme CommonMark reno pre-commit;
 	# needed for pre-commit to work correctly
 	pre-commit install
 	#copy pre-commit config for docs
