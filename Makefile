@@ -16,8 +16,9 @@ uptcex:
 	mkdir ./docs/tcex;
 	# clone the most recent commit to the master branch of the tcex repo into the ./tcex directory
 	git clone --branch master https://github.com/ThreatConnect-Inc/tcex.git;
-	# remove the .git & gitignore directories of the recently cloned tcex repo
+	# remove the .git from cloned tcex
 	rm -rf ./tcex/.git/;
+	# remove the .gitignore from cloned tcex
 	rm -rf ./tcex/.gitignore;
 	# move all of the .rst files from the tcex repo's documentation into this repo's documentation directory
 	cp -pr ./tcex/docs/src/*rst ./docs/tcex;
@@ -25,7 +26,8 @@ uptcex:
 	cp -pr ./tcex/docs/src/*.inc ./docs/tcex/;
 	# build docs to ensure that they are the latest
 	# make shell scripts executeable
-	chmod 755 ./tcex/docs/src/*.sh;
+	chmod 755 ./tcex/docs/src/001__cleanup.sh;
+	chmod 755 ./docs/00_build.sh
 	# install needed python libraries
 	pip install tcex sphinx>=3.5.2 sphinx_rtd_theme CommonMark reno pre-commit;
 	# needed for pre-commit to work correctly
@@ -33,7 +35,7 @@ uptcex:
 	#copy pre-commit config for docs
 	cp ./tcex/.pre-commit-config.yaml ./tcex/docs/src;
 	# change to the tcex/docs/src directory and run the build
-	cd ./tcex/docs/src/; ./00__build.sh;
+	cd ./tcex/docs/src/; ../../../docs/00_build.sh;
 	# change to the tcex/docs/src directory and perform a clean up
 	cd ./tcex/docs/src/; ./01__cleanup.sh;
 	# rename the landing page for the tcex docs
@@ -50,7 +52,6 @@ uptcex:
 	sed -i.bak 's/|version|/|tcex_version|/g' ./docs/tcex/tcex.rst && rm ./docs/tcex/tcex.rst.bak;
 	# stage all changes (including deletions)
 	# remove config file for pre-commits from TCEX
-	rm -rf ./tcex/docs/src/.pre-commit-config.yaml
 	git add .
 	# commit
 	git commit -m "Auto-update TCEX docs: $(today)";
@@ -59,7 +60,6 @@ uptcex:
 
 clean:
 	# This script is to be run in the top directory of the TC Documentation (available here: https://github.com/ThreatConnect-Inc/threatconnect-developer-docs)
-
 	rm -rf ./.cache/
 	rm -rf ./tests/__pycache__/
 	rm -rf ./tests/test.py
