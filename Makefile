@@ -27,7 +27,7 @@ uptcex:
 	# make shell scripts executeable
 	chmod 755 ./tcex/docs/src/*.sh;
 	# install needed python libraries
-	pip3 install tcex sphinx>=3.5.2 sphinx_rtd_theme CommonMark reno pre-commit;
+	pip install tcex sphinx>=3.5.2 sphinx_rtd_theme CommonMark reno pre-commit;
 	# needed for pre-commit to work correctly
 	pre-commit install
 	#copy pre-commit config for docs
@@ -49,6 +49,8 @@ uptcex:
 	# change the variable name of the tcex version used in the tcex docs
 	sed -i.bak 's/|version|/|tcex_version|/g' ./docs/tcex/tcex.rst && rm ./docs/tcex/tcex.rst.bak;
 	# stage all changes (including deletions)
+	# remove config file for pre-commits from TCEX
+	rm -rf ./tcex/docs/src/.pre-commit-config.yaml
 	git add .
 	# commit
 	git commit -m "Auto-update TCEX docs: $(today)";
