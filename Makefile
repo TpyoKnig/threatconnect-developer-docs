@@ -26,8 +26,8 @@ uptcex:
 	cp -pr ./tcex/docs/src/*.inc ./docs/tcex/;
 	# build docs to ensure that they are the latest
 	# make shell scripts executeable
-	chmod 755 ./tcex/docs/src/001__cleanup.sh;
-	chmod 755 ./docs/00_build.sh
+	chmod 755 ./tcex/docs/src/01__cleanup.sh;
+	chmod 755 ./docs/00__build.sh
 	# install needed python libraries
 	pip install tcex sphinx>=3.5.2 sphinx_rtd_theme CommonMark reno pre-commit;
 	# needed for pre-commit to work correctly
