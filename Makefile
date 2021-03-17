@@ -8,41 +8,50 @@ help:
 today := $(shell date +"%B %d, %Y")
 uptcex:
 	# This script is to be run in the top directory of the TC Documentation (available here: https://github.com/ThreatConnect-Inc/threatconnect-developer-docs)
-
+	# delete any top level copy of tcex docs
 	rm -rf ./tcex/;
-
+	# delete old copy of tcex docs
+	rm -rf ./docs/tcex/;
+	# make new TCEX directory for documentation
+	mkdir ./docs/tcex;
 	# clone the most recent commit to the master branch of the tcex repo into the ./tcex directory
-	git clone --depth 1 --branch master https://github.com/ThreatConnect-Inc/tcex.git;
-
-	# remove the .git directory of the recently cloned tcex repo
+	git clone --branch master https://github.com/ThreatConnect-Inc/tcex.git;
+	# remove the .git & gitignore directories of the recently cloned tcex repo
 	rm -rf ./tcex/.git/;
 	rm -rf ./tcex/.gitignore;
-
-	# remove all of the old tcex documentation files
-	rm -rf ./docs/tcex/*;
 	# move all of the .rst files from the tcex repo's documentation into this repo's documentation directory
-	mv ./tcex/docs/src/*.rst ./docs/tcex/;
+	cp -pr ./tcex/docs/src/*rst ./docs/tcex;
 	# move all of the .inc files from the tcex repo's documentation into this repo's documentation directory
-	mv ./tcex/docs/src/*.inc ./docs/tcex/;
-	# move all of the tcex module documentation files into this repo's documentation directory
-	mv ./tcex/docs/src/tcex_docs/ ./docs/tcex/;
+	cp -pr ./tcex/docs/src/*.inc ./docs/tcex/;
+	# build docs to ensure that they are the latest
+	# make shell scripts executeable
+	chmod 755 ./tcex/docs/src/*.sh;
+	# install needed python libraries
+	pip install tcex sphinx sphinx_rtd_theme CommonMark reno pre-commit;
+	# needed for pre-commit to work correctly
+	pre-commit install
+	#copy pre-commit config for docs
+	cp ./tcex/.pre-commit-config.yaml ./tcex/docs/src;
+	# change to the tcex/docs/src directory and run the build
+	cd ./tcex/docs/src/; ./00__build.sh;
+	# change to the tcex/docs/src directory and perform a clean up
+	cd ./tcex/docs/src/; ./01__cleanup.sh;
 	# rename the landing page for the tcex docs
-	mv ./docs/tcex/index.rst ./docs/tcex/tcex.rst;
-	# remove the docs directory
-	rm -rf ./tcex/docs;
-
-	# remove unused files
-	rm -f ./tcex/LICENSE ./tcex/README.md ./tcex/setup.cfg ./tcex/setup.py;
-
+	mv ./tcex/docs/src/index.rst ./docs/tcex/tcex.rst;
+	# move all of the .rst files from the compiled repo's documentation into this repo's documentation directory
+	mv ./tcex/docs/src/*.rst ./docs/tcex/;
+	# move all of the .inc files from the compiled repo's documentation into this repo's documentation directory
+	mv ./tcex/docs/src/*.inc ./docs/tcex/;
+	# move over tcex_docs as well
+	mv ./tcex/docs/src/tcex_docs/ ./docs/tcex/;
+	# remove old directory
+	rm -rf ./tcex/;
 	# change the variable name of the tcex version used in the tcex docs
 	sed -i.bak 's/|version|/|tcex_version|/g' ./docs/tcex/tcex.rst && rm ./docs/tcex/tcex.rst.bak;
-
 	# stage all changes (including deletions)
-	git add .;
-
+	git add .
 	# commit
 	git commit -m "Auto-update TCEX docs: $(today)";
-
 	# push
 	git push
 
